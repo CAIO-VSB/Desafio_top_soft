@@ -7,7 +7,8 @@ export function useNotify() {
         Notify.create({
             message: message,
             type: type,
-            icon: icon
+            icon: icon,
+            position: "top"
         })
     }
 

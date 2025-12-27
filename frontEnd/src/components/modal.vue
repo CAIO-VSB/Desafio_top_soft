@@ -15,12 +15,12 @@
   //---------------------------------------------------------
   //Pego a data atual para futuras formatações
   const data = new Date(),
-
-  dia = data.getDate().toString().padStart(2, '0'),
-  mes = (data.getMonth() + 1).toString().padStart(2, '0'),
-  ano = data.getFullYear();
-
+  dia = data.getDate(),
+  mes = (data.getMonth()),
+  ano = data.getFullYear()
   const dataFormatada = `${ano}-${mes}-${dia}`;
+
+  console.log("ta mudando " + dataFormatada)
   //-------------------------------------------------------
   const dataBR = ref("")
 
@@ -53,11 +53,7 @@
 
   //Mostra sempre a data atual com base na escolha do usuario
   watch(() => lancamentoForm.value.data, (newDate) => {
-
     dataBR.value = paraDataBR(newDate)
-
-    //console.log('Data para BR', dataBR)
-
   })
 
 
@@ -90,7 +86,6 @@
         lancamentoForm.value.tipo_lancamento = ""
         lancamentoForm.value.valor = ""
 
-        //console.log("Data a ser enviada para o backend", dateISO)
       }
 
     } catch (error) {

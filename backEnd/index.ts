@@ -4,6 +4,9 @@ import express from "express"
 import { addLancamento } from "./repository/add.lancamentos"
 import { getLancamentos } from "./repository/get.lancamentos";
 import cors from 'cors';
+import { getPagamentos } from "./repository/getPagamentos"
+import { getRecebimentos } from "./repository/getRecebimentos";
+import { getForDate } from "./repository/getForDate";
 
 //Instancia do expresss
 const app: express.Application = express()
@@ -28,6 +31,64 @@ app.get("/get-lancamentos", async (req, res) => {
     try {
 
         const result = await getLancamentos()
+
+            return res.status(200).json({
+                status: 200,
+                message: "Lancamentos buscado com sucesso",
+                data: result
+            })
+
+
+    } catch (error) {
+        console.log("erro ao buscar os dados", error)
+    }
+})
+
+app.post("/get-periodo", async (req, res) => {
+    
+    try {
+
+        const { dataInicial, dataFinal } = req.body
+
+        const result = await getForDate(dataInicial, dataFinal)
+
+            return res.status(200).json({
+                status: 200,
+                message: "Lancamentos no periodo buscado com sucesso",
+                data: result
+            })
+
+
+    } catch (error) {
+
+        console.log("erro ao buscar os dados", error)
+    }
+})
+
+
+//Busca todos lançamentos do tipo pagamentos
+app.get("/get-pagamentos", async (req, res) => {
+    try {
+
+        const result = await getPagamentos()
+
+            return res.status(200).json({
+                status: 200,
+                message: "Requisição enviada com sucesso",
+                data: result
+            })
+
+
+    } catch (error) {
+        console.log("erro ao buscar os dados")
+    }
+})
+
+//Busca todos lançamentos do tipo recebimento
+app.get("/get-recebimentos", async (req, res) => {
+    try {
+
+        const result = await getRecebimentos()
 
             return res.status(200).json({
                 status: 200,

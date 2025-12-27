@@ -1,4 +1,3 @@
-import { TLancamentoApi } from "../types/type.lancamento"
 
 import { prisma } from '../lib/prisma'
 
