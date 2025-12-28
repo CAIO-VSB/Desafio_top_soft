@@ -8,13 +8,10 @@
   //Import do grafico
   import { DoughnutChart } from 'vue-chart-3'
   import { Chart, registerables } from 'chart.js'
-import type { TBuscaNoPeriodo } from '@/types/type.lancamento'
-
   Chart.register(...registerables);
 
   const modal = ref(false)
-  const modalGet = ref(false)
-  const periodo = ref<TBuscaNoPeriodo>({
+  const periodo = ref({
     dataInical: "",
     dataFinal: ""
   })
@@ -48,7 +45,7 @@ import type { TBuscaNoPeriodo } from '@/types/type.lancamento'
 
   ]
 
-//Linhas da tabela
+  //Linhas da tabela
   const rows = computed(() =>
     (lancamentosStore.lancamentos || []).map(item => ({
       data: new Date(item.data).toLocaleDateString(),
@@ -83,6 +80,7 @@ import type { TBuscaNoPeriodo } from '@/types/type.lancamento'
     return dataFinal.split('/').reverse().join('/')
   }
 
+
   async function buscarPorPeriodo() {
 
     const dateISO = new Date(periodo.value.dataInical).toISOString()
@@ -91,11 +89,16 @@ import type { TBuscaNoPeriodo } from '@/types/type.lancamento'
     console.log("Data inicial no formatod ISO", dateISO)
     console.log("Data inicial no formatod ISO", dateISO1)
 
-
     const testeResult = await lancamentosStore.getPorPeriodo(dateISO, dateISO1)
 
-    console.log("Os dados por periodo", testeResult)
+  }
 
+  async function resetarPeriodo() {
+
+    periodo.value.dataFinal = ""
+    periodo.value.dataInical = ""
+
+    await lancamentosStore.getAllLancamentos()
   }
 
 </script>
@@ -120,7 +123,7 @@ import type { TBuscaNoPeriodo } from '@/types/type.lancamento'
       </div>
 
       <div class="q-pa-md" style="max-width: 300px">
-        <q-input label="data inicial" mask="##/##/####" filled v-model="dataBRFinal">
+        <q-input label="data final" mask="##/##/####" filled v-model="dataBRFinal">
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -135,8 +138,12 @@ import type { TBuscaNoPeriodo } from '@/types/type.lancamento'
         </q-input>
       </div>
 
-      <div>
+      <div class="buttons">
         <q-btn @click="buscarPorPeriodo" color="primary" label="Filtrar" />
+      </div>
+      
+      <div>
+        <q-btn @click="resetarPeriodo" color="primary" label="Resetar" />
       </div>
       
     </div>
@@ -158,32 +165,7 @@ import type { TBuscaNoPeriodo } from '@/types/type.lancamento'
   </div>
 
  <div class="q-pa-md q-gutter-sm">
-    <q-dialog v-model="modalGet" persistent>
-      <q-card style="min-width: 550px">
-
-        <q-card-section>
-          <div class="text-h6 title">Registar Lançamento</div>
-        </q-card-section>
-
-        <div>{{ lancamentosStore.lancamentos }}</div>
-
-        <q-form
-        >
-      
-        </q-form>
-
-        <q-separator />
-      
-      <div class="container-buttons">
-        <q-card-actions align="right" class="text-primary">
-          <q-btn flat label="Cancelar" v-close-popup />
-          <q-btn flat label="Salvar" type="submit" />
-        </q-card-actions>
-      </div>
-
-      </q-card>
-    </q-dialog>
-
+    
     <div>
       <DoughnutChart :chartData="testData" />
     </div>
@@ -205,6 +187,10 @@ import type { TBuscaNoPeriodo } from '@/types/type.lancamento'
 .container-date {
   display: flex;
   align-items: center;
+}
+
+.buttons {
+  margin: 5px;
 }
 
 </style>

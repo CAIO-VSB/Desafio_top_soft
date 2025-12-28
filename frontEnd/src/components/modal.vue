@@ -12,16 +12,7 @@
   const { notify } = useNotify()
   const lancamentosStore = useLancamentosStore()
 
-  //---------------------------------------------------------
-  //Pego a data atual para futuras formatações
-  const data = new Date(),
-  dia = data.getDate(),
-  mes = (data.getMonth()),
-  ano = data.getFullYear()
-  const dataFormatada = `${ano}-${mes}-${dia}`;
 
-  console.log("ta mudando " + dataFormatada)
-  //-------------------------------------------------------
   const dataBR = ref("")
 
   const prompt = ref(false)
@@ -32,8 +23,8 @@
   const lancamentoForm = ref<TLancamento>({
     descricao: "",
     valor: "",
-    data: dataFormatada,
-    tipo_lancamento: ""
+    data: "",
+    tipo_lancamento: "Recebimento"
   })
 
 
@@ -140,13 +131,11 @@
 
           <q-checkbox 
           val="Pagamento*" 
-          label="Recebimento?*"  
+          :label="lancamentoForm.tipo_lancamento"  
           v-model="lancamentoForm.tipo_lancamento"
           true-value="Recebimento"
           false-value="Pagamento" 
           />
-
-          {{ lancamentoForm.tipo_lancamento }}
 
           <p class="title-obs">(*) Desmarque caso seja lancamento de pagamento</p>
 

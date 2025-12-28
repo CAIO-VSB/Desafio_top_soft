@@ -16,7 +16,7 @@ datasource db {
 model lancamento {
   id        Int      @id @default(autoincrement())
   descricao String
-  data      DateTime
+  data      DateTime @db.Timestamptz(3)
   valor     Decimal  @db.Decimal(10,2)
   tipo_lancamento      String
   createdAt DateTime @default(now())

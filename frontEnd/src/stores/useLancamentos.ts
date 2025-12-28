@@ -79,7 +79,8 @@ export const useLancamentosStore = defineStore('lancamentos', () => {
 
       lancamentos.value = response.data.data
 
-      console.log("Busca no perido especifico", lancamentos.value)
+      console.log('Filtro por data:', dataInicial, dataFinal, response.data.data)
+
 
     } catch (error) {
 
