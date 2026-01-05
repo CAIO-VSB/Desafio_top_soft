@@ -8,7 +8,7 @@
 
   const modelValue =  defineModel<boolean>()
 
-  const { nameRules, dateRules, valorRules, tipoRules } = useValidateFields()
+  const { nameRules, dateRules, valorRules } = useValidateFields()
   const { notify } = useNotify()
   const lancamentosStore = useLancamentosStore()
 

@@ -48,7 +48,7 @@
   //Linhas da tabela
   const rows = computed(() =>
     (lancamentosStore.lancamentos || []).map(item => ({
-      data: new Date(item.data).toLocaleDateString(),
+      data: new Date(item.data).toLocaleDateString("pt-BR", {timeZone: "UTC"}),
       descricao: item.descricao || '',
       valor: Number(item.valor).toFixed(2),
       tipo: item.tipo_lancamento
@@ -56,12 +56,22 @@
   )
 
   const totalRecebimentos = computed(() => {
-    return (lancamentosStore.totalRecebimentos || []).reduce((acc, item) => Number(acc) + Number(item.valor), 0)
+
+    return (lancamentosStore.lancamentos || [])
+    .filter(item => item.tipo_lancamento === "Recebimento")
+    .reduce((acc, item) => Number(acc) + Number(item.valor), 0)
+
   })
 
   const totalPagamentos = computed(() => {
-    return (lancamentosStore.totalPagamentos || []).reduce((acc, item) => Number(acc) + Number(item.valor), 0)
+
+    return (lancamentosStore.lancamentos || [])
+    .filter(item => item.tipo_lancamento === "Pagamento")
+    .reduce((acc, item) => Number(acc) + Number(item.valor), 0)
+
   })
+
+
 
   const testData = computed(() => ({
     labels: ['Recebimentos', 'Pagamentos'],
