@@ -32,8 +32,6 @@
 
   onMounted( async () => {
     await lancamentosStore.getAllLancamentos()
-    await lancamentosStore.getTotalRecebimentos()
-    await lancamentosStore.getTotalPagamentos()
   })
 
   // Colunas da tabela

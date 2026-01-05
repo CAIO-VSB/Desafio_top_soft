@@ -6,8 +6,6 @@ import axios from 'axios'
 export const useLancamentosStore = defineStore('lancamentos', () => {
 
   const lancamentos = ref<TLancamento []>([])
-  const totalPagamentos = ref<TTotalLancamentos []>([])
-  const totalRecebimentos = ref<TTotalRecebimento[]>([])
   const Loading = ref(false)
 
   const postLancamentos = async (data: TLancamento) => {
@@ -18,8 +16,6 @@ export const useLancamentosStore = defineStore('lancamentos', () => {
       lancamentos.value.push(response.data)
 
       await getAllLancamentos()
-      await getTotalRecebimentos()
-      await getTotalPagamentos()
 
     } catch (error) {
       
@@ -47,27 +43,7 @@ export const useLancamentosStore = defineStore('lancamentos', () => {
     }
   }
 
-  const getTotalRecebimentos = async () => {
 
-    try {
-
-      Loading.value = true
-
-      const response = await axios.get("http://localhost:4000/get-recebimentos")
-
-      totalRecebimentos.value = response.data.data
-
-      console.log("Total de recebimentos backEnd", totalRecebimentos.value)
-
-    } catch (error) {
-
-      console.log("Erro não programado", error)
-
-    } finally {
-
-      Loading.value = false
-    }
-  }
 
   const getPorPeriodo = async (dataInicial: string, dataFinal: string) => {
 
@@ -92,28 +68,8 @@ export const useLancamentosStore = defineStore('lancamentos', () => {
     }
   }
 
-  const getTotalPagamentos = async () => {
-
-    try {
-
-      Loading.value = true
-
-      const response = await axios.get("http://localhost:4000/get-pagamentos")
-
-      totalPagamentos.value = response.data.data
-
-      console.log("Total de recebimentos backEnd", totalPagamentos.value)
-
-    } catch (error) {
-
-      console.log("Erro não programado", error)
-
-    } finally {
-
-      Loading.value = false
-    }
-  }
+  
 
 
-  return { getPorPeriodo, getTotalRecebimentos, getTotalPagamentos, getAllLancamentos, postLancamentos, lancamentos, Loading, totalRecebimentos, totalPagamentos }
+  return { getPorPeriodo, getAllLancamentos, postLancamentos, lancamentos, Loading }
 })
